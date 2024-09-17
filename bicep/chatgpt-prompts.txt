@@ -1,0 +1,2 @@
+create a bicep template and powershell script to run it. Resources needed are:
+appservice (free tier please), storage account and a user assigned managed identity (UAMI), this UAMI should be an identity assigned on the appservice and it should have blob contributor access on the storage account
