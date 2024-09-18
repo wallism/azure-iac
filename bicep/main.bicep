@@ -22,6 +22,12 @@ resource uami 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   location: location
 }
 
+// Key Vault UAMI
+resource keyVaultUami 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+  name: keyVaultUamiName
+  location: location
+}
+
 // App Service Plan (Free Tier)
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: '${appServiceName}-plan'
@@ -32,7 +38,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   }
 }
 
-// App Service
+// App Service with both UAMIs (uami & keyVaultUami) assigned
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
   name: appServiceName
   location: location
@@ -42,7 +48,8 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${uami.id}': {}
+      '${uami.id}': {}             // Existing UAMI
+      '${keyVaultUami.id}': {}     // Key Vault UAMI
     }
   }
 }
@@ -57,20 +64,12 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-11-01' = {
       name: 'standard'
     }
     tenantId: subscription().tenantId
-    // Enable Azure RBAC instead of access policies
     enableRbacAuthorization: true
-    // Remove accessPolicies, since they are not needed with RBAC
     accessPolicies: []
   }
 }
 
-// User Assigned Managed Identity (UAMI) for Key Vault
-resource keyVaultUami 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: keyVaultUamiName
-  location: location
-}
-
-// Create a secret in Key Vault using the correct resource type and parent property
+// Create a secret in Key Vault
 resource keyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2022-11-01' = {
   name: 'TestSecret'
   parent: keyVault
@@ -90,7 +89,7 @@ resource roleAssignmentBlob 'Microsoft.Authorization/roleAssignments@2020-04-01-
   }
 }
 
-// Role Assignment: UAMI for Reader on Key Vault
+// Role Assignment: Key Vault UAMI for Reader on Key Vault
 resource roleAssignmentReader 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   name: guid(keyVaultUami.id, keyVault.id, 'Reader')
   scope: keyVault
@@ -101,7 +100,7 @@ resource roleAssignmentReader 'Microsoft.Authorization/roleAssignments@2020-04-0
   }
 }
 
-// Role Assignment: UAMI for Key Vault Secrets User on Key Vault
+// Role Assignment: Key Vault UAMI for Key Vault Secrets User on Key Vault
 resource roleAssignmentSecretsUser 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   name: guid(keyVaultUami.id, keyVault.id, 'KeyVault Secrets User')
   scope: keyVault

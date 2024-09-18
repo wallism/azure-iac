@@ -19,3 +19,7 @@ this isn't valid: resource keyVaultSecret 'secrets'
 # RBAC based keyvault
 on the keyvault we want this access control activated: Azure role-based access control
 
+# keyvault uami on appservice
+please assign the keyvault uami to the appservice
+
+
