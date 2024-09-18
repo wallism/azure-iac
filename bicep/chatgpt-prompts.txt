@@ -1,2 +1,17 @@
 create a bicep template and powershell script to run it. Resources needed are:
 appservice (free tier please), storage account and a user assigned managed identity (UAMI), this UAMI should be an identity assigned on the appservice and it should have blob contributor access on the storage account
+
+# keyvault
+that works, now add a keyvault named, dev-kv-azureiac-bicep-ause with a UAMI called dev-kv-azureiac-bicep-ause-uami. That UAMI should be assigned these roles on the keyvault, Reader and Keyvault Secrets User.
+
+# secret
+create a secret in the keyvault with name TestSecret and value of "mytestvalue"
+
+# secret in bicep
+please create the secret in the bicep
+
+# warning
+Warning use-parent-property: Resource "keyVaultSecret" has its name formatted as a child of resource "keyVault". The syntax can be simplified by using the parent property
+
+# 'secrets' not valid
+this isn't valid: resource keyVaultSecret 'secrets' 
