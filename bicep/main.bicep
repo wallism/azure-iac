@@ -47,7 +47,7 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
-// Key Vault
+// Key Vault with Azure RBAC enabled
 resource keyVault 'Microsoft.KeyVault/vaults@2022-11-01' = {
   name: keyVaultName
   location: location
@@ -57,6 +57,9 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-11-01' = {
       name: 'standard'
     }
     tenantId: subscription().tenantId
+    // Enable Azure RBAC instead of access policies
+    enableRbacAuthorization: true
+    // Remove accessPolicies, since they are not needed with RBAC
     accessPolicies: []
   }
 }

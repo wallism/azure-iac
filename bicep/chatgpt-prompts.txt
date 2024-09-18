@@ -15,3 +15,7 @@ Warning use-parent-property: Resource "keyVaultSecret" has its name formatted as
 
 # 'secrets' not valid
 this isn't valid: resource keyVaultSecret 'secrets' 
+
+# RBAC based keyvault
+on the keyvault we want this access control activated: Azure role-based access control
+
