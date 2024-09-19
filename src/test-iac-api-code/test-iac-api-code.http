@@ -1,0 +1,6 @@
+@test_iac_api_code_HostAddress = http://localhost:5133
+
+GET {{test_iac_api_code_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
