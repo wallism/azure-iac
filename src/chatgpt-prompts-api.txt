@@ -1,0 +1,3 @@
+I have this in my .net 8 web api: app.MapGet("/test", async () =>
+I want to test connectivity to a keyservice and a storage account in that function
+

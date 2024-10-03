@@ -25,15 +25,12 @@ app.MapGet("/test", async () =>
     var keyVaultUrl = "https://dev-kv-azureiac-bicep.vault.azure.net/";
     var blobServiceUrl = "https://devstazureiacbicepause.blob.core.windows.net/";
 
-    var credentialOptions = new DefaultAzureCredentialOptions
-    {
+    // note: the only reason for these GetEnvironmentVariable's is to verify manually, that the values are being picked up.
+    var id = Environment.GetEnvironmentVariable("AZURE_CLIENT_ID");
+    var clientSecret = Environment.GetEnvironmentVariable("AZURE_CLIENT_SECRET"); 
+    var tenantId = Environment.GetEnvironmentVariable("AZURE_TENANT_ID");
 
-        //TenantId = "645b8bfb-fa88-4e2c-9b71-af49f9e4d6fe",
-        //ManagedIdentityClientId = "aeb8d4de-6a7b-4c68-8a52-d0249706f251",
-        ExcludeVisualStudioCredential = true,
-        ExcludeAzureCliCredential = true // this is where it picks up my personal email
-    };
-    var credential = new DefaultAzureCredential(credentialOptions);
+    var credential = new DefaultAzureCredential();
 
     // Key Vault Client to fetch a secret (e.g., "mySecret")
     var secretClient = new SecretClient(new Uri(keyVaultUrl), credential);
