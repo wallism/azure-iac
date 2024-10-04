@@ -1,6 +1,12 @@
 #See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+
+ENV AZURE_TENANT_ID=645b8bfb-fa88-4e2c-9b71-af49f9e4d6fe
+ENV AZURE_CLIENT_ID=7af1e512-a942-4568-95f2-bdce7d7c9747
+ENV AZURE_CLIENT_SECRET=Ie-8Q~ZqLHBOIAKOHiNiDwWBZly4KkFepa
+
+
 USER app
 WORKDIR /app
 EXPOSE 8080
