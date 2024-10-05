@@ -36,15 +36,24 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
     name: 'F1'
     tier: 'Free'
   }
+  kind: 'linux'
+  properties: {
+    reserved: true // Indicates Linux
+  }
 }
 
-// App Service with both UAMIs (uami & keyVaultUami) assigned
+
+// App Service configured for Container deployment
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
   name: appServiceName
   location: location
   properties: {
     serverFarmId: appServicePlan.id
+    siteConfig: {
+      linuxFxVersion: 'DOCKER|hello-world:latest' // Specify your container image
+    }
   }
+  kind: 'app,linux,container'
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
