@@ -1,11 +1,12 @@
 # Variables
-$resourceGroupName = "dev-azureiac-bicep"
+$environment = "dev"
+$resourceGroupName = "${environment}-azureiac-bicep"
 $location = "Australia East"
-$appServiceName = "dev-app-azureiac-bicep-ause"
-$storageAccountName = "devstazureiacbicepause"
-$uamiName = "devstazureiacbicepause-uami"
-$keyVaultName = "dev-kv-azureiac-bicep"
-$keyVaultUamiName = "dev-kv-azureiac-bicep-uami"
+$appServiceName = "app-azureiac-bicep-ause"
+$storageAccountName = "stazureiacbicepause"
+$uamiName = "stazureiacbicepause-uami"
+$keyVaultName = "kv-azureiac-bicep"
+$keyVaultUamiName = "kv-azureiac-bicep-uami"
 $templateFile = "main.bicep"
 
 # Create Resource Group (if not exists)
@@ -20,4 +21,5 @@ az deployment group create `
   storageAccountName=$storageAccountName `
   uamiName=$uamiName `
   keyVaultName=$keyVaultName `
-  keyVaultUamiName=$keyVaultUamiName
+  keyVaultUamiName=$keyVaultUamiName `
+  environment=$environment

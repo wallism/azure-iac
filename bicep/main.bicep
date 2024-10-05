@@ -1,4 +1,5 @@
 // Parameters
+param environment string
 param location string = resourceGroup().location
 param appServiceName string
 param storageAccountName string
@@ -8,7 +9,7 @@ param keyVaultUamiName string
 
 // Storage Account
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
-  name: storageAccountName
+  name: '${environment}${storageAccountName}'
   location: location
   sku: {
     name: 'Standard_LRS'
@@ -18,19 +19,19 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
 
 // User Assigned Managed Identity (UAMI) for App Service
 resource uami 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: uamiName
+  name: '${environment}-${uamiName}'
   location: location
 }
 
 // Key Vault UAMI
 resource keyVaultUami 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: keyVaultUamiName
+  name: '${environment}-${keyVaultUamiName}'
   location: location
 }
 
 // App Service Plan (Free Tier)
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: '${appServiceName}-plan'
+  name: '${environment}-${appServiceName}-plan'
   location: location
   sku: {
     name: 'F1'
@@ -45,7 +46,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
 
 // App Service configured for Container deployment
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
-  name: appServiceName
+  name: '${environment}-${appServiceName}'
   location: location
   properties: {
     serverFarmId: appServicePlan.id
@@ -65,7 +66,7 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
 
 // Key Vault with Azure RBAC enabled
 resource keyVault 'Microsoft.KeyVault/vaults@2022-11-01' = {
-  name: keyVaultName
+  name: '${environment}-${keyVaultName}'
   location: location
   properties: {
     sku: {
