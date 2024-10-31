@@ -29,15 +29,17 @@ resource "azurerm_user_assigned_identity" "uami" {
   resource_group_name = azurerm_resource_group.main.name
 }
 
-resource "azurerm_app_service_plan" "appserviceplan" {
-  name                = "dev-appserviceplan-ause"
+resource "azurerm_service_plan" "service_plan" {
+  name                = "dev-serviceplan-ause"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
-  sku {
-    tier = "Free"
-    size = "F1"
-  }
+
+  os_type  = "Linux"         # Specify the OS type (use "Windows" if required)
+  sku_name = "F1"            # Free tier SKU
+
+
 }
+
 
 resource "azurerm_app_service" "appservice" {
   name                = "dev-appservice-ause"
