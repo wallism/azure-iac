@@ -1,10 +1,14 @@
 provider "azurerm" {
   features {}
+    # Required for authentication
+  subscription_id = "584b7ab4-d35f-4eef-ac2e-b88890e8a7fe"
+
+  # Uncomment and fill these in if using a service principal
+  # client_id       = "<YOUR_CLIENT_ID>"
+  # client_secret   = "<YOUR_CLIENT_SECRET>"
+  # tenant_id       = "<YOUR_TENANT_ID>"
 }
 
-variable "resource_group_name" {
-  default = "dev-rg-azureiac"
-}
 
 resource "azurerm_resource_group" "main" {
   name     = var.resource_group_name
