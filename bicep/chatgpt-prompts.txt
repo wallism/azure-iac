@@ -23,3 +23,9 @@ on the keyvault we want this access control activated: Azure role-based access c
 please assign the keyvault uami to the appservice
 
 
+##### Terraform
+create terraform templates and powershell script to run it. Resources needed are:
+appservice (free tier please), storage account and a user assigned managed identity (UAMI), this UAMI should be an identity assigned on the appservice and it should have blob contributor access on the storage account
+use a naming convention like this dev-kv-azureiac-bicep-ause-uami
+
+
