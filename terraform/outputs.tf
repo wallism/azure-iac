@@ -9,3 +9,10 @@ output "storage_account_name" {
 output "user_assigned_identity_name" {
   value = azurerm_user_assigned_identity.uami.name
 }
+
+output "storage-uami-id"{
+    value = azurerm_user_assigned_identity.uami.id
+}
+output "keyvault-uami-id"{
+    value = azurerm_user_assigned_identity.uami_keyvault.id
+}
