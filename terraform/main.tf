@@ -49,7 +49,10 @@ resource "azurerm_app_service" "appservice" {
 
   identity {
     type = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.uami.id]
+    identity_ids = [
+        azurerm_user_assigned_identity.uami.id,
+        azurerm_user_assigned_identity.uami_keyvault.id
+        ]
   }
 }
 
