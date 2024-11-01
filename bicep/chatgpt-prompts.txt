@@ -28,4 +28,13 @@ create terraform templates and powershell script to run it. Resources needed are
 appservice (free tier please), storage account and a user assigned managed identity (UAMI), this UAMI should be an identity assigned on the appservice and it should have blob contributor access on the storage account
 use a naming convention like this dev-kv-azureiac-bicep-ause-uami
 
+# keyvault
+that works, now add a keyvault named, dev-kv-azureiac-ause with a UAMI called dev-kv-azureiac-ause-uami. That UAMI should be assigned these roles on the keyvault, Reader and Keyvault Secrets User.
 
+# environments
+with the resource names, I want to be able to specify an environment, e.g. dev or uat, can you replaces all instances of dev- to use a variable
+
+# state per environment
+how do I ensure the terraform state remembers all env's
+
+I'm going to use option 1, but how do I use ${terraform.workspace} in variables.tf, for example to create a resource group name using ${terraform.workspace} as a prefix?

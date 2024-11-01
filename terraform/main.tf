@@ -8,15 +8,18 @@ provider "azurerm" {
   # client_secret   = "<YOUR_CLIENT_SECRET>"
   # tenant_id       = "<YOUR_TENANT_ID>"
 }
-
+locals {
+  # Construct the resource group name using the current workspace as the prefix
+  resource_group_name = "${terraform.workspace}-rg-azureiac"
+}
 
 resource "azurerm_resource_group" "main" {
-  name     = var.resource_group_name
+  name     = local.resource_group_name
   location = "Australia East"
 }
 
 resource "azurerm_storage_account" "storage" {
-  name                     = "devstgaccountause"
+  name                     = "${terraform.workspace}stgaccountause"
   resource_group_name      = azurerm_resource_group.main.name
   location                 = azurerm_resource_group.main.location
   account_tier             = "Standard"
@@ -24,13 +27,13 @@ resource "azurerm_storage_account" "storage" {
 }
 
 resource "azurerm_user_assigned_identity" "uami" {
-  name                = "dev-kv-azureiac-bicep-ause-uami"
+  name                = "${terraform.workspace}-kv-azureiac-bicep-ause-uami"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
 }
 
 resource "azurerm_service_plan" "service_plan" {
-  name                = "dev-serviceplan-ause"
+  name                = "${terraform.workspace}-serviceplan-ause"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
 
@@ -42,7 +45,7 @@ resource "azurerm_service_plan" "service_plan" {
 
 
 resource "azurerm_app_service" "appservice" {
-  name                = "dev-appservice-ause"
+  name                = "${terraform.workspace}-appservice-ause"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   app_service_plan_id = azurerm_service_plan.service_plan.id
@@ -64,7 +67,7 @@ resource "azurerm_role_assignment" "blob_contributor" {
 
 # Key Vault Resource with RBAC enabled
 resource "azurerm_key_vault" "keyvault" {
-  name                = "dev-kv-azureiac-tf-ause"
+  name                = "${terraform.workspace}-kv-azureiac-tf-ause"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   tenant_id           = "645b8bfb-fa88-4e2c-9b71-af49f9e4d6fe"
@@ -80,7 +83,7 @@ resource "azurerm_key_vault" "keyvault" {
 
 # User Assigned Managed Identity for Key Vault
 resource "azurerm_user_assigned_identity" "uami_keyvault" {
-  name                = "dev-kv-azureiac-tf-ause-uami"
+  name                = "${terraform.workspace}-kv-azureiac-tf-ause-uami"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
 }
