@@ -58,3 +58,32 @@ resource "azurerm_role_assignment" "blob_contributor" {
   role_definition_name = "Storage Blob Data Contributor"
   scope          = azurerm_storage_account.storage.id
 }
+
+# Key Vault Resource
+resource "azurerm_key_vault" "keyvault" {
+  name                = "dev-kv-azureiac-ause"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+  tenant_id           = "645b8bfb-fa88-4e2c-9b71-af49f9e4d6fe"
+  sku_name            = "standard"
+}
+
+# User Assigned Managed Identity for Key Vault
+resource "azurerm_user_assigned_identity" "uami_keyvault" {
+  name                = "dev-kv-azureiac-ause-uami"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+}
+
+# Role assignments for the UAMI on the Key Vault
+resource "azurerm_role_assignment" "keyvault_reader" {
+  principal_id         = azurerm_user_assigned_identity.uami_keyvault.principal_id
+  role_definition_name = "Reader"
+  scope                = azurerm_key_vault.keyvault.id
+}
+
+resource "azurerm_role_assignment" "keyvault_secrets_user" {
+  principal_id         = azurerm_user_assigned_identity.uami_keyvault.principal_id
+  role_definition_name = "Key Vault Secrets User"
+  scope                = azurerm_key_vault.keyvault.id
+}
