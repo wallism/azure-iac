@@ -45,7 +45,7 @@ resource "azurerm_app_service" "appservice" {
   name                = "dev-appservice-ause"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
-  app_service_plan_id = azurerm_app_service_plan.appserviceplan.id
+  app_service_plan_id = azurerm_service_plan.service_plan.id
 
   identity {
     type = "UserAssigned"
