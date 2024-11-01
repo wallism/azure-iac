@@ -59,18 +59,25 @@ resource "azurerm_role_assignment" "blob_contributor" {
   scope          = azurerm_storage_account.storage.id
 }
 
-# Key Vault Resource
+# Key Vault Resource with RBAC enabled
 resource "azurerm_key_vault" "keyvault" {
-  name                = "dev-kv-azureiac-ause"
+  name                = "dev-kv-azureiac-tf-ause"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   tenant_id           = "645b8bfb-fa88-4e2c-9b71-af49f9e4d6fe"
   sku_name            = "standard"
+  
+  # Enable RBAC
+  enable_rbac_authorization = true
+  access_policy = []
+  purge_protection_enabled = false
 }
+
+
 
 # User Assigned Managed Identity for Key Vault
 resource "azurerm_user_assigned_identity" "uami_keyvault" {
-  name                = "dev-kv-azureiac-ause-uami"
+  name                = "dev-kv-azureiac-tf-ause-uami"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
 }
